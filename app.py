@@ -78,8 +78,8 @@ def index():
             func=count_and_save_words, args=(url,), result_ttl=120
         )
         print(job.get_id())
-
-    return render_template('index.html', results=results)
+    return job.get_id()
+    # return render_template('index.html', results=results)
 
 
 @app.route("/results/<job_key>", methods=['GET'])
