@@ -1,3 +1,3 @@
 #!/bin/bash
 gunicorn app:app --daemon
-python worker.py
+celery -A worker worker --loglevel=debug
