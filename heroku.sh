@@ -1,3 +1,4 @@
 #!/bin/bash
 gunicorn app:app --daemon
-celery -A worker worker --loglevel=debug
+worker: celery worker --app=worker.app
+#celery -A worker worker --loglevel=debug
