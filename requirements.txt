@@ -33,7 +33,6 @@ pytz==2018.7
 redis==2.10.5
 requests==2.20.1
 rq==0.5.6
-rq-win==0.3.13
 six==1.11.0
 SQLAlchemy==1.2.14
 sympy==1.3
