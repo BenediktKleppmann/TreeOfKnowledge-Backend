@@ -1,15 +1,19 @@
-import os
+#!/usr/bin/env python3
+from celery import Celery
+from algorithm import approx
 
-import redis
-from rq import Worker, Queue, Connection
+# run with:
+# $ redis-server
+# $ celery -A worker worker --loglevel=debug
 
-listen = ['default']
+app = Celery(__name__, backend='rpc://', broker='redis://localhost:6379/')
 
-redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+## easier, if you don't care about exceptions:
+# integrate = app.task(approx)
 
-conn = redis.from_url(redis_url)
-
-if __name__ == '__main__':
-    with Connection(conn):
-        worker = Worker(list(map(Queue, listen)))
-        worker.work()
+@app.task
+def integrate(*args, **kwargs):
+    try:
+        return approx(*args, **kwargs)
+    except Exception:
+        return
