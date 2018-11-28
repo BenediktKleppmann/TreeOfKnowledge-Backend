@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from celery import Celery
 from algorithm import approx
+import os
 
 # run with:
 # $ redis-server
