@@ -1,1 +1,1 @@
-worker: celery worker --app=worker.app
+web: sh heroku.sh
