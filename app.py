@@ -34,6 +34,10 @@ db = SQLAlchemy(app)
 
 TASKS = {}
 
+@app.route('test/', methods=['GET'])
+def test():
+    return "test sucessful"
+
 
 @app.route('/', methods=['GET'])
 def list_tasks():
