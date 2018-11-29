@@ -101,11 +101,11 @@ def test():
 
 
 
-# @app.route('start_simulation/', methods=['GET'])
-# def start_simulation(request):
-#     task = run_simulations.apply_async()
-#     return jsonify({}), 202, {'Location': url_for('taskstatus',
-#                                                   task_id=task.id)}
+@app.route('/start_simulation/', methods=['GET'])
+def start_simulation(request):
+    task = run_simulations.apply_async()
+    return jsonify({}), 202, {'Location': url_for('taskstatus',
+                                                  task_id=task.id)}
 
 
 
