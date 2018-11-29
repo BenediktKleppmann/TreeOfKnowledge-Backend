@@ -66,9 +66,9 @@ def put_task():
 # ===============================================================
 # ===============================================================
 
-@app.route('test/', methods=['PUT'])
-def test():
-    return 'test'
+# @app.route('test/', methods=['PUT'])
+# def test():
+#     return 'test'
 
 # @app.route('/status/<task_id>')
 # def taskstatus(task_id):
