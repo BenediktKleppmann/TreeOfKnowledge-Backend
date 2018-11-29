@@ -3,7 +3,10 @@ import os
 from flask import Flask, render_template, request, jsonify
 from flask.ext.sqlalchemy import SQLAlchemy
 
-from worker import integrate
+from worker import integrate, run_simulation
+from celery.result import AsyncResult
+from celery import task, current_task
+from simulations import simulation
 
 
 
@@ -47,6 +50,8 @@ def get_task(task_id):
         response['result'] = task.get()
     return jsonify(response)
 
+
+
 @app.route('/', methods=['PUT'])
 def put_task():
     f = request.json['f']
@@ -60,6 +65,40 @@ def put_task():
     TASKS[task_id] = integrate.delay(f, a, b, c, d, size)
     response = {'result': task_id}
     return jsonify(response)
+
+# ===============================================================
+# ===============================================================
+# ===============================================================
+
+@task
+def run_simulation():
+	for i in range(40):
+		simulation.run_simulation()
+		current_task.update_state(state='PROGRESS',
+            meta={'current': i, 'total': 40})
+
+
+@app.route('poll_simulation/<int:task_id>', methods=['GET'])
+def poll_task(task_id):
+    response = {'task_id': task_id}
+    job = AsyncResult(task_id)
+    data = job.result or job.state
+    response['data'] = data
+    return jsonify(response)
+
+
+@app.route('init_simulation/', methods=['GET'])
+def init_simulation(request):
+    """ A view to start a background job and redirect to the status page """
+    job = run_simulation.delay()
+    return jsonify({"job_id":job.id})
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

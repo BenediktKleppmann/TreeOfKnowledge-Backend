@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from celery import Celery
+from celery import Celery, current_task
 from algorithm import approx
 import os
 
@@ -13,9 +13,11 @@ app.conf.update(BROKER_URL=redis_url, CELERY_RESULT_BACKEND=redis_url)
 ## easier, if you don't care about exceptions:
 # integrate = app.task(approx)
 
+
 @app.task
 def integrate(*args, **kwargs):
     try:
         return approx(*args, **kwargs)
     except Exception:
-        return
+    	return
+        # return {"error": "couldn't execute algorithm.approx()"}
