@@ -19,3 +19,15 @@ def integrate(*args, **kwargs):
         return approx(*args, **kwargs)
     except Exception:
         return
+
+# @app.task(bind=True)
+# def run_simulations(self):
+#     total=50
+#     for i in range(total):
+#         message = "just did step %s !" % (str(i))
+#         self.update_state(state='PROGRESS',
+#                           meta={'current': i, 'total': total,
+#                                 'status': message})
+#         time.sleep(0.1)
+#     return {'current': 50, 'total': 50, 'status': 'Task completed!',
+#             'result': 42}
